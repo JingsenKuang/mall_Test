@@ -79,7 +79,7 @@ public class UserServiceImpl implements IUserService {
 
     public ServiceResponse<String> selectQuestion(String username){
         ServiceResponse validResponse = this.checkValid(username,Const.USERNAME);
-        if(!validResponse.isSuccess()){
+        if(validResponse.isSuccess()){
             return ServiceResponse.createByErrorMessage("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
@@ -105,7 +105,7 @@ public class UserServiceImpl implements IUserService {
             return ServiceResponse.createByErrorMessage("参数错误，token需要传递");
         }
         ServiceResponse validResponse = this.checkValid(username,Const.USERNAME);
-        if(!validResponse.isSuccess()){
+        if(validResponse.isSuccess()){
             return ServiceResponse.createByErrorMessage("用户不存在");
         }
         String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
@@ -139,4 +139,35 @@ public class UserServiceImpl implements IUserService {
         }
         return ServiceResponse.createByErrorMessage("密码更新失败");
     }
+
+    public ServiceResponse<User> updateInformation(User user){
+        //username不能被更新
+        //email校验是否已经存在，如果存在的email是相同的，不能是我们当前的用户
+        int resultCount = userMapper.checkEmailByUserId(user.getEmail(),user.getId());
+        if(resultCount>0){
+            return ServiceResponse.createByErrorMessage("email已存在，请更换email再尝试");
+        }
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setQuestion(user.getQuestion());
+        updateUser.setAnswer(user.getAnswer());
+
+        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
+        if(updateCount>0){
+            return ServiceResponse.createBySuccess("更新个人信息成功",updateUser);
+        }
+        return  ServiceResponse.createByErrorMessage("更新个人信息失败");
+    }
+
+    public ServiceResponse<User> getInformation(Integer userId){
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user == null){
+            return ServiceResponse.createByErrorMessage("找不到当前用户");
+        }
+        user.setPassword(StringUtils.EMPTY);
+        return ServiceResponse.createBySuccess(user);
+    }
+
 }
