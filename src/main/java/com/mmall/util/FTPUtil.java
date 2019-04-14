@@ -1,4 +1,4 @@
-package com.mmall.utill;
+package com.mmall.util;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;

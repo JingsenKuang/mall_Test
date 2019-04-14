@@ -1,7 +1,7 @@
 package com.mmall.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mmall.common.ServiceResponse;
+import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Product;
 import com.mmall.vo.ProductDetailVo;
 
@@ -9,11 +9,11 @@ import com.mmall.vo.ProductDetailVo;
  * Created by kjs on 2019/4/9
  */
 public interface IProductService {
-    ServiceResponse saveOrUpdateProduct(Product product);
-    ServiceResponse<String> setSaleStatus(Integer productId,Integer status);
-    ServiceResponse<ProductDetailVo> manageProductDetail(Integer productId);
-    ServiceResponse<PageInfo> getProductList(int pageNum, int pageSize);
-    ServiceResponse<PageInfo> searchProduct(String productName,Integer productId,int pageNem,int pageSize);
-    ServiceResponse<ProductDetailVo> getProductDetail(Integer productId);
-    ServiceResponse<PageInfo> getProductByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy);
+    ServerResponse saveOrUpdateProduct(Product product);
+    ServerResponse<String> setSaleStatus(Integer productId, Integer status);
+    ServerResponse<ProductDetailVo> manageProductDetail(Integer productId);
+    ServerResponse<PageInfo> getProductList(int pageNum, int pageSize);
+    ServerResponse<PageInfo> searchProduct(String productName, Integer productId, int pageNem, int pageSize);
+    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+    ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy);
 }
